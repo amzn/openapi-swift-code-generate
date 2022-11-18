@@ -23,7 +23,7 @@ import Yams
 
 internal extension OpenAPIServiceModel {
     static func filterHeaders(operation: OpenAPI.Operation, code: Int, headers: OpenAPI.Header.Map,
-                              modelOverride: ModelOverride?) -> OpenAPI.Header.Map {
+                              modelOverride: OpenAPIModelOverride?) -> OpenAPI.Header.Map {
         
         guard let ignoreResponseHeaders = modelOverride?.ignoreResponseHeaders else {
             return headers
@@ -65,7 +65,8 @@ internal extension OpenAPIServiceModel {
     }
     
     static func setOperationOutput(operation: OpenAPI.Operation, operationName: String, model: inout OpenAPIServiceModel,
-                                   modelOverride: ModelOverride?, description: inout OperationDescription, document: OpenAPI.Document) {
+                                   modelOverride: OpenAPIModelOverride?, description: inout OperationDescription,
+                                   document: OpenAPI.Document) {
         for (code, response) in operation.responses {
             switch response {
             case .b(let value):

@@ -21,6 +21,8 @@ import ServiceModelCodeGeneration
 import SwaggerParser
 import Yams
 
+public typealias SwaggerModelOverride = ModelOverride<NoModelTypeOverrides>
+
 /**
  Struct that models the Metadata of the Swagger model.
  */
@@ -36,7 +38,7 @@ public struct SwaggerServiceModel: ServiceModel {
     public var errorCodeMappings: [String: String] = [:]
     
     public static func create(data: Data, modelFormat: ModelFormat,
-                              modelOverride: ModelOverride?) throws -> SwaggerServiceModel {
+                              modelOverride: SwaggerModelOverride?) throws -> SwaggerServiceModel {
         let definition: Swagger
         switch modelFormat {
         case .yaml:

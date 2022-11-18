@@ -23,7 +23,7 @@ import Yams
 
 internal extension SwaggerServiceModel {
     static func parseDefinitionSchemas(model: inout SwaggerServiceModel, enclosingEntityName: inout String,
-                                       schema: SwaggerParser.Schema, modelOverride: ModelOverride?) {
+                                       schema: SwaggerParser.Schema, modelOverride: SwaggerModelOverride?) {
         switch schema.type {
         case .boolean:
             model.fieldDescriptions[enclosingEntityName] = .boolean
@@ -86,7 +86,7 @@ internal extension SwaggerServiceModel {
     
     static func parseObjectSchema(structureDescription: inout StructureDescription, enclosingEntityName: inout String,
                                   model: inout SwaggerServiceModel, objectSchema: SwaggerParser.ObjectSchema,
-                                  modelOverride: ModelOverride?) {
+                                  modelOverride: SwaggerModelOverride?) {
         let sortedKeys = objectSchema.properties.keys.sorted(by: <)
         
         for (index, name) in sortedKeys.enumerated() {
@@ -131,7 +131,7 @@ internal extension SwaggerServiceModel {
     static func parseArrayDefinitionSchemas(arrayMetadata: (ArraySchema),
                                             enclosingEntityName: inout String,
                                             model: inout SwaggerServiceModel,
-                                            modelOverride: ModelOverride?) {
+                                            modelOverride: SwaggerModelOverride?) {
         let type: String
         switch arrayMetadata.items {
         case .one(let value):
@@ -167,7 +167,7 @@ internal extension SwaggerServiceModel {
      */
     static func parseStructureSchema(structureDescription: inout StructureDescription, enclosingEntityName: inout String,
                                      model: inout SwaggerServiceModel, structureSchema: SwaggerParser.Structure<Schema>,
-                                     modelOverride: ModelOverride?) {
+                                     modelOverride: SwaggerModelOverride?) {
         switch structureSchema.structure.type {
         case .object(let objectSchema):
             parseObjectSchema(structureDescription: &structureDescription, enclosingEntityName: &enclosingEntityName,
@@ -182,7 +182,7 @@ internal extension SwaggerServiceModel {
      */
     static func parseAllOfSchema(structureDescription: inout StructureDescription, enclosingEntityName: inout String,
                                  model: inout SwaggerServiceModel, allOfSchema: SwaggerParser.AllOfSchema,
-                                 modelOverride: ModelOverride?) {
+                                 modelOverride: SwaggerModelOverride?) {
         for (index, subschema) in allOfSchema.subschemas.enumerated() {
             var enclosingEntityNameForProperty = "\(enclosingEntityName)\(index + 1)"
             
