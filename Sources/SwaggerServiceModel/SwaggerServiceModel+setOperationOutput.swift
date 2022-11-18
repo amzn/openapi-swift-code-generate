@@ -23,7 +23,7 @@ import Yams
 
 internal extension SwaggerServiceModel {
     static func filterHeaders(operation: SwaggerParser.Operation, code: Int, headers: [String: Items],
-                              modelOverride: ModelOverride?) -> [String: Items] {
+                              modelOverride: SwaggerModelOverride?) -> [String: Items] {
         
         guard let ignoreResponseHeaders = modelOverride?.ignoreResponseHeaders else {
             // no filtering required
@@ -66,7 +66,7 @@ internal extension SwaggerServiceModel {
     }
     
     static func setOperationOutput(operation: SwaggerParser.Operation, operationName: String, model: inout SwaggerServiceModel,
-                                   modelOverride: ModelOverride?, description: inout OperationDescription) {
+                                   modelOverride: SwaggerModelOverride?, description: inout OperationDescription) {
         // iterate through the responses
         for (code, response) in operation.responses {
             switch response {

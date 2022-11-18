@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/mattpolzin/OpenAPIKit.git",
         "state": {
           "branch": null,
-          "revision": "0c668112f9803c1858ed070f9e8ce84922a0b41f",
-          "version": "3.0.0-alpha.4"
+          "revision": "15e39d1594b5da2b11d63f141203296d48cc5213",
+          "version": "3.0.0-alpha.5"
         }
       },
       {
@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/amzn/service-model-swift-code-generate",
         "state": {
           "branch": null,
-          "revision": "7e1f1aff0a2a0b3b103b613f00eeb7542abfa1f4",
-          "version": "3.0.0-beta.13"
+          "revision": "3cacd62f7290554185ffcf839ec75c4ee2584d8e",
+          "version": "3.0.0-rc.2"
         }
       },
       {

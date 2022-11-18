@@ -31,7 +31,7 @@ internal extension OpenAPIServiceModel {
     }
     
     static func filterOperations(operations: [OpenAPI.HttpMethod: OpenAPI.Operation],
-                                 modelOverride: ModelOverride?) -> [OpenAPI.HttpMethod: OpenAPI.Operation] {
+                                 modelOverride: OpenAPIModelOverride?) -> [OpenAPI.HttpMethod: OpenAPI.Operation] {
         
         guard let ignoreOperations = modelOverride?.ignoreOperations else {
             return operations
@@ -64,7 +64,7 @@ internal extension OpenAPIServiceModel {
         return filteredOperations
     }
     
-    static func createOpenAPIModel(definition: OpenAPI.Document, modelOverride: ModelOverride?) -> OpenAPIServiceModel {
+    static func createOpenAPIModel(definition: OpenAPI.Document, modelOverride: OpenAPIModelOverride?) -> OpenAPIServiceModel {
         var model = OpenAPIServiceModel()
 
         model.serviceInformation = ServiceInformation(
@@ -126,7 +126,7 @@ internal extension OpenAPIServiceModel {
                                operationName: String,
                                model: inout OpenAPIServiceModel,
                                operation: OpenAPI.Operation,
-                               modelOverride: ModelOverride?,
+                               modelOverride: OpenAPIModelOverride?,
                                document: OpenAPI.Document) {
         let (members, bodyStructureName) = getOperationMembersAndBodyStructureName(
             operation: operation,
@@ -145,7 +145,8 @@ internal extension OpenAPIServiceModel {
             operation: OpenAPI.Operation,
             operationName: String,
             model: inout OpenAPIServiceModel,
-            modelOverride: ModelOverride?, document: OpenAPI.Document) -> (members: OperationInputMembers, bodyStructureName: String?) {
+            modelOverride: OpenAPIModelOverride?,
+            document: OpenAPI.Document) -> (members: OperationInputMembers, bodyStructureName: String?) {
         var members = OperationInputMembers()
         var bodyStructureName: String?
         
@@ -177,7 +178,7 @@ internal extension OpenAPIServiceModel {
     
     static func getBodyOperationMembers(_ request: OpenAPI.Request, bodyStructureName: inout String?,
                                         operationName: String, model: inout OpenAPIServiceModel,
-                                        modelOverride: ModelOverride?, document: OpenAPI.Document) {
+                                        modelOverride: OpenAPIModelOverride?, document: OpenAPI.Document) {
         for (_, content) in request.content {
             if let either = content.schema {
                 switch either {
@@ -209,7 +210,7 @@ internal extension OpenAPIServiceModel {
     }
     
     static func ignoreRequestHeader(operationName: String, headerName: String,
-                                     modelOverride: ModelOverride?) -> Bool {
+                                     modelOverride: OpenAPIModelOverride?) -> Bool {
         
         guard let ignoreRequestHeaders = modelOverride?.ignoreRequestHeaders else {
             return false
@@ -236,7 +237,8 @@ internal extension OpenAPIServiceModel {
     
     static func getFixedFieldsOperationMembers(fixedFields: OpenAPI.Parameter, operationName: String,
                                                index: Int, members: inout OpenAPIServiceModel.OperationInputMembers,
-                                               items: JSONSchema, model: inout OpenAPIServiceModel, modelOverride: ModelOverride?) {
+                                               items: JSONSchema, model: inout OpenAPIServiceModel,
+                                               modelOverride: OpenAPIModelOverride?) {
         let typeName = fixedFields.name.safeModelName().startingWithUppercase
         
         let fieldName = "\(operationName)Request\(typeName)"
@@ -265,7 +267,8 @@ internal extension OpenAPIServiceModel {
     
     static func addOperationResponseFromSchema(schema: JSONSchema, operationName: String, forCode code: Int, index: Int?,
                                                description: inout OperationDescription,
-                                               model: inout OpenAPIServiceModel, modelOverride: ModelOverride?, document: OpenAPI.Document) {
+                                               model: inout OpenAPIServiceModel,
+                                               modelOverride: OpenAPIModelOverride?, document: OpenAPI.Document) {
         switch schema.value {
         case .one(let subschemas, _):
             for (index, subschema) in subschemas.enumerated() {
@@ -305,7 +308,7 @@ internal extension OpenAPIServiceModel {
     
     static func addOperationResponseFromReference(reference: JSONReference<JSONSchema>, operationName: String, forCode code: Int,
                                                   index: Int?, description: inout OperationDescription,
-                                                  model: inout OpenAPIServiceModel, modelOverride: ModelOverride?) {
+                                                  model: inout OpenAPIServiceModel, modelOverride: OpenAPIModelOverride?) {
         if let refName = reference.name {
             if nonErrorCodeRange.contains(code) {
                 description.output = refName
@@ -317,7 +320,7 @@ internal extension OpenAPIServiceModel {
     }
     
     static func addField(item: JSONSchema, fieldName: String,
-                         model: inout OpenAPIServiceModel, modelOverride: ModelOverride?) {
+                         model: inout OpenAPIServiceModel, modelOverride: OpenAPIModelOverride?) {
         switch item.value {
         case .string(_, let context):
             addStringField(metadata: context,
@@ -374,7 +377,7 @@ internal extension OpenAPIServiceModel {
                                schema: JSONSchema?,
                                model: inout OpenAPIServiceModel,
                                fieldName: String,
-                               modelOverride: ModelOverride?) {
+                               modelOverride: OpenAPIModelOverride?) {
         let newValueConstraints: [(name: String, value: String)]
 
         if modelOverride?.modelStringPatternsAreAlternativeList ?? false,

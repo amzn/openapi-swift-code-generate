@@ -29,7 +29,7 @@ internal extension SwaggerServiceModel {
     }
     
     static func filterOperations(operations: [OperationType: SwaggerParser.Operation],
-                                 modelOverride: ModelOverride?) -> [OperationType: SwaggerParser.Operation] {
+                                 modelOverride: SwaggerModelOverride?) -> [OperationType: SwaggerParser.Operation] {
         
         guard let ignoreOperations = modelOverride?.ignoreOperations else {
             // no filtering required
@@ -63,7 +63,7 @@ internal extension SwaggerServiceModel {
         return filteredOperations
     }
     
-    static func createSwaggerModel(definition: Swagger, modelOverride: ModelOverride?) -> SwaggerServiceModel {
+    static func createSwaggerModel(definition: Swagger, modelOverride: SwaggerModelOverride?) -> SwaggerServiceModel {
         var model = SwaggerServiceModel()
 
         model.serviceInformation = ServiceInformation(
@@ -120,7 +120,7 @@ internal extension SwaggerServiceModel {
                                operationName: String,
                                model: inout SwaggerServiceModel,
                                operation: SwaggerParser.Operation,
-                               modelOverride: ModelOverride?) {
+                               modelOverride: SwaggerModelOverride?) {
         let (members, bodyStructureName) = getOperationMembersAndBodyStructureName(
             operation: operation,
                             operationName: operationName,
@@ -138,7 +138,7 @@ internal extension SwaggerServiceModel {
             operation: SwaggerParser.Operation,
             operationName: String,
             model: inout SwaggerServiceModel,
-            modelOverride: ModelOverride?) -> (members: OperationInputMembers, bodyStructureName: String?) {
+            modelOverride: SwaggerModelOverride?) -> (members: OperationInputMembers, bodyStructureName: String?) {
         var members = OperationInputMembers()
         var bodyStructureName: String?
         
@@ -169,7 +169,7 @@ internal extension SwaggerServiceModel {
     }
     
     static func getBodyOperationMembers(_ schema: Schema, bodyStructureName: inout String?,
-                                        operationName: String, model: inout SwaggerServiceModel, modelOverride: ModelOverride?) {
+                                        operationName: String, model: inout SwaggerServiceModel, modelOverride: SwaggerModelOverride?) {
         switch schema.type {
         case .structure(let structure):
             bodyStructureName = structure.name
@@ -188,7 +188,7 @@ internal extension SwaggerServiceModel {
     }
     
     static func ignoreRequestHeader(operationName: String, headerName: String,
-                                     modelOverride: ModelOverride?) -> Bool {
+                                     modelOverride: SwaggerModelOverride?) -> Bool {
         
         guard let ignoreRequestHeaders = modelOverride?.ignoreRequestHeaders else {
             // no filtering required
@@ -216,7 +216,7 @@ internal extension SwaggerServiceModel {
     
     static func getFixedFieldsOperationMembers(fixedFields: FixedParameterFields, operationName: String,
                                                index: Int, members: inout SwaggerServiceModel.OperationInputMembers,
-                                               items: Items, model: inout SwaggerServiceModel, modelOverride: ModelOverride?) {
+                                               items: Items, model: inout SwaggerServiceModel, modelOverride: SwaggerModelOverride?) {
         let typeName = fixedFields.name.safeModelName().startingWithUppercase
         
         let fieldName = "\(operationName)Request\(typeName)"
@@ -247,7 +247,7 @@ internal extension SwaggerServiceModel {
     
     static func addOperationResponseFromSchema(_ schema: Schema, operationName: String, forCode code: Int, index: Int?,
                                                description: inout OperationDescription,
-                                               model: inout SwaggerServiceModel, modelOverride: ModelOverride?) {
+                                               model: inout SwaggerServiceModel, modelOverride: SwaggerModelOverride?) {
         switch schema.type {
         case .structure(let structure):
             if code >= 200 && code < 300 {
@@ -283,7 +283,7 @@ internal extension SwaggerServiceModel {
     }
     
     static func addField(type: ItemsType, fieldName: String,
-                         model: inout SwaggerServiceModel, modelOverride: ModelOverride?) {
+                         model: inout SwaggerServiceModel, modelOverride: SwaggerModelOverride?) {
         switch type {
         case .string(item: let item):
             addStringField(metadata: item.metadata,
@@ -340,7 +340,7 @@ internal extension SwaggerServiceModel {
                                schema: Schema?,
                                model: inout SwaggerServiceModel,
                                fieldName: String,
-                               modelOverride: ModelOverride?) {
+                               modelOverride: SwaggerModelOverride?) {
         let pattern: String?
         let newValueConstraints: [(name: String, value: String)]
         // if the pattern is a list of alternatives

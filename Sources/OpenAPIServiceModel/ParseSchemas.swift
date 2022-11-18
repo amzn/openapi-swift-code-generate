@@ -23,7 +23,7 @@ import Yams
 
 internal extension OpenAPIServiceModel {
     static func parseDefinitionSchemas(model: inout OpenAPIServiceModel, enclosingEntityName: inout String,
-                                       schema: JSONSchema, modelOverride: ModelOverride?, document: OpenAPI.Document) {
+                                       schema: JSONSchema, modelOverride: OpenAPIModelOverride?, document: OpenAPI.Document) {
         switch schema.value {
         case .boolean:
             model.fieldDescriptions[enclosingEntityName] = .boolean
@@ -81,7 +81,7 @@ internal extension OpenAPIServiceModel {
     
     static func parseObjectSchema(structureDescription: inout StructureDescription, enclosingEntityName: inout String,
                                   model: inout OpenAPIServiceModel, objectContext: JSONSchema.ObjectContext,
-                                  modelOverride: ModelOverride?, document: OpenAPI.Document) {
+                                  modelOverride: OpenAPIModelOverride?, document: OpenAPI.Document) {
         let sortedKeys = objectContext.properties.keys.sorted(by: <)
         
         for (index, name) in sortedKeys.enumerated() {
@@ -131,7 +131,7 @@ internal extension OpenAPIServiceModel {
     static func parseArrayDefinitionSchemas(arrayMetadata: JSONSchema.ArrayContext,
                                             enclosingEntityName: inout String,
                                             model: inout OpenAPIServiceModel,
-                                            modelOverride: ModelOverride?, document: OpenAPI.Document) {
+                                            modelOverride: OpenAPIModelOverride?, document: OpenAPI.Document) {
         if let items = arrayMetadata.items {
             switch items.value {
             case .reference(let ref, _):
@@ -182,7 +182,7 @@ internal extension OpenAPIServiceModel {
     // Parse all, any, one schemas
     static func parseOtherSchemas(structureDescription: inout StructureDescription, enclosingEntityName: inout String,
                                   model: inout OpenAPIServiceModel, otherSchema: [JSONSchema],
-                                  modelOverride: ModelOverride?, document: OpenAPI.Document) {
+                                  modelOverride: OpenAPIModelOverride?, document: OpenAPI.Document) {
         for (index, subschema) in otherSchema.enumerated() {
             var enclosingEntityNameForProperty = "\(enclosingEntityName)\(index + 1)"
             

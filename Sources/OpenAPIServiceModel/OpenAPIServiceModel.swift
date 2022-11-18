@@ -21,6 +21,8 @@ import ServiceModelEntities
 import ServiceModelCodeGeneration
 import Yams
 
+public typealias OpenAPIModelOverride = ModelOverride<NoModelTypeOverrides>
+
 /**
  Struct that models the Metadata of the OpenAPI  model.
  */
@@ -35,7 +37,7 @@ public struct OpenAPIServiceModel: ServiceModel {
     public var errorCodeMappings: [String: String] = [:]
     
     public static func create(data: Data, modelFormat: ModelFormat,
-                              modelOverride: ModelOverride?) throws -> OpenAPIServiceModel {
+                              modelOverride: OpenAPIModelOverride?) throws -> OpenAPIServiceModel {
         let definition: OpenAPI.Document
         switch modelFormat {
         case .yaml:
