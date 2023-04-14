@@ -1,3 +1,16 @@
+<p align="center">
+<a href="https://github.com/amzn/openapi-swift-code-generate/actions">
+<img src="https://github.com/amzn/openapi-swift-code-generate/actions/workflows/swift.yml/badge.svg?branch=main" alt="Build - Main Branch">
+</a>
+<a href="http://swift.org">
+<img src="https://img.shields.io/badge/swift-5.6|5.7|5.8-orange.svg?style=flat" alt="Swift 5.6, 5.7 and 5.8 Tested">
+</a>
+<a href="https://gitter.im/SmokeServerSide">
+<img src="https://img.shields.io/badge/chat-on%20gitter-ee115e.svg?style=flat" alt="Join the Smoke Server Side community on gitter">
+</a>
+<img src="https://img.shields.io/badge/license-Apache2-blue.svg?style=flat" alt="Apache 2">
+</p>
+
 # OpenAPISwiftCodeGenerate
 OpenAPISwiftCodeGenerate is an extension of [ServiceModelSwiftCodeGenerate](https://github.com/amzn/service-model-swift-code-generate) that can be used to generate code based on OpenAPI/Swagger service models. This library can be integrated into higher level code generation applications.
 
