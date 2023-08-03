@@ -81,7 +81,7 @@ internal extension OpenAPIServiceModel {
         for (path, pathDefinition) in definition.paths {
             var operations:[OpenAPI.HttpMethod: OpenAPI.Operation] = [:]
             
-            pathDefinition.endpoints.forEach { endpoint in
+            pathDefinition.pathItemValue?.endpoints.forEach { endpoint in
                 operations[endpoint.method] = endpoint.operation
             }
             
