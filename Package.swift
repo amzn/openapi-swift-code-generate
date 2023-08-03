@@ -32,7 +32,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/tachyonics/SwaggerParser.git", from: "0.6.4"),
         .package(url: "https://github.com/jpsim/Yams.git", from: "4.0.0"),
-        .package(url: "https://github.com/mattpolzin/OpenAPIKit.git", from: "3.0.0-alpha.4"),
+        .package(url: "https://github.com/mattpolzin/OpenAPIKit.git", from: "3.0.0-alpha.9"),
         .package(url: "https://github.com/amzn/service-model-swift-code-generate", from: "3.0.0")
     ],
     targets: [
